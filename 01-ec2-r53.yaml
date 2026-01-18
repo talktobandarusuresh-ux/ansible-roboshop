@@ -3,9 +3,9 @@
   connection: local
   vars:
     ami_id: ami-09c813fb71547fc4f
-    sg_id: sg-0af0f38d03f29a201 # replace with your SG ID
-    zone_id: "Z00483002KQGHYINL2NKX" # replace with your ID
-    domain_name: "bandarusuresh.in"
+    sg_id: sg-07c8acf3fa6b923fa # replace with your SG ID
+    zone_id: "Z0948150OFPSYTNVYZOY" # replace with your ID
+    domain_name: "daws86s.fun"
     # we can pass instances through command line using -e
     # instances: 
     # - mongodb
@@ -24,25 +24,25 @@
     loop: "{{ instances }}"
     register: ec2_output
 
-  - name: print the ec2_output
-    ansible.builtin.debug:
-      msg: "{{ ec2_output }}"
+  # - name: print the ec2_output
+  #   ansible.builtin.debug:
+  #     msg: "{{ ec2_output }}"
 
-  - name: print public_ip
-    ansible.builtin.debug: 
-      msg: "{{ item.instances[0].public_ip_address }}"
-    loop: "{{ ec2_output.results }}"
+  # - name: print public_ip
+  #   ansible.builtin.debug: 
+  #     msg: "{{ item.instances[0].public_ip_address }}"
+  #   loop: "{{ ec2_output.results }}"
 
-  - name: print private_ip
-    ansible.builtin.debug: 
-      msg: "{{ item.instances[0].private_ip_address }}"
-    loop: "{{ ec2_output.results }}"
+  # - name: print private_ip
+  #   ansible.builtin.debug: 
+  #     msg: "{{ item.instances[0].private_ip_address }}"
+  #   loop: "{{ ec2_output.results }}"
 
   - name: create route53 record
     amazon.aws.route53:
       state: present
       zone: "{{ domain_name }}"
-      record: "{{ item.item }}.{{ domain_name }}" # mongodb.bandarusuresh.in.fun
+      record: "{{ item.item }}.{{ domain_name }}" # mongodb.daws86s.fun
       type: A
       ttl: 1
       value: "{{ item.instances[0].private_ip_address }}"
@@ -54,7 +54,7 @@
     amazon.aws.route53:
       state: present
       zone: "{{ domain_name }}"
-      record: "{{ domain_name }}" # bandarusuresh.in.fun
+      record: "{{ domain_name }}" # daws86s.fun
       type: A
       ttl: 1
       value: "{{ item.instances[0].public_ip_address }}"
