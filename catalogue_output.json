@@ -2,7 +2,7 @@
         "changed": true,
         "cmd": [
             "mongosh",
-            "mongodb.daws86s.fun",
+            "mongodb.bandarusuresh.in",
             "--quiet",
             "--eval",
             "db.getMongo().getDBNames().indexOf('catalogue')"
