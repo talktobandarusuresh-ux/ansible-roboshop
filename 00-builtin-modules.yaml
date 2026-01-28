@@ -1,0 +1,202 @@
+---
+- name: Commonly Used Ansible Built-in Modules Demo
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  tasks:
+
+    # =========================
+    # PING MODULE
+    # =========================
+    # Used to verify connectivity between Ansible controller and managed nodes.
+    # Helps validate SSH access and Python availability on target hosts.
+    - name: Check connectivity using ping
+      ansible.builtin.ping:
+
+
+    # =========================
+    # YUM / DNF MODULE
+    # =========================
+    # Used to install, update, or remove packages on RHEL-based systems.
+    # Preferred over raw shell commands for idempotency.
+    - name: Install nginx package
+      ansible.builtin.yum:
+        name: nginx
+        state: present
+
+
+    # =========================
+    # SERVICE / SYSTEMD MODULE
+    # =========================
+    # Used to manage services (start, stop, restart, enable).
+    # Ensures services remain in the desired state.
+    - name: Start and enable nginx service
+      ansible.builtin.systemd:
+        name: nginx
+        state: started
+        enabled: yes
+
+
+    # =========================
+    # COPY MODULE
+    # =========================
+    # Used to copy files from controller to managed nodes.
+    # Supports permissions and ownership management.
+    - name: Copy a static configuration file
+      ansible.builtin.copy:
+        src: files/index.html
+        dest: /usr/share/nginx/html/index.html
+        owner: root
+        group: root
+        mode: '0644'
+
+
+    # =========================
+    # TEMPLATE MODULE
+    # =========================
+    # Used to deploy configuration files using Jinja2 templates.
+    # Enables dynamic values using variables.
+    - name: Deploy nginx config from template
+      ansible.builtin.template:
+        src: templates/nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
+      notify: Restart nginx
+
+
+    # =========================
+    # FILE MODULE
+    # =========================
+    # Used to manage file and directory properties.
+    # Can create, delete, or modify permissions.
+    - name: Create application directory
+      ansible.builtin.file:
+        path: /opt/app
+        state: directory
+        owner: ec2-user
+        group: ec2-user
+        mode: '0755'
+
+
+    # =========================
+    # LINEINFILE MODULE
+    # =========================
+    # Used to ensure a specific line exists in a file.
+    # Commonly used for configuration changes.
+    - name: Disable root SSH login
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PermitRootLogin'
+        line: 'PermitRootLogin no'
+
+
+    # =========================
+    # USER MODULE
+    # =========================
+    # Used to create, delete, or manage users.
+    # Supports groups, shells, and password settings.
+    - name: Create devops user
+      ansible.builtin.user:
+        name: devops
+        groups: wheel
+        shell: /bin/bash
+        state: present
+
+
+    # =========================
+    # FIREWALLD MODULE
+    # =========================
+    # Used to manage firewall rules on RHEL systems.
+    # Safer than manual firewall-cmd commands.
+    - name: Allow HTTP service in firewall
+      ansible.builtin.firewalld:
+        service: http
+        permanent: yes
+        state: enabled
+        immediate: yes
+
+
+    # =========================
+    # SETUP MODULE (FACTS)
+    # =========================
+    # Used to collect system facts like OS, IP, memory, CPU.
+    # Facts are available as variables.
+    - name: Display OS information
+      ansible.builtin.debug:
+        msg: "OS Family is {{ ansible_os_family }}"
+
+
+    # =========================
+    # DEBUG MODULE
+    # =========================
+    # Used to print variables or messages during play execution.
+    # Very useful for troubleshooting.
+    - name: Print custom debug message
+      ansible.builtin.debug:
+        msg: "Nginx installation completed successfully"
+
+
+    # =========================
+    # COMMAND MODULE
+    # =========================
+    # Used to run commands without shell features.
+    # More secure than shell module.
+    - name: Check nginx version
+      ansible.builtin.command: nginx -v
+      register: nginx_version
+      ignore_errors: yes
+
+
+    # =========================
+    # SHELL MODULE
+    # =========================
+    # Used when shell features like pipes or redirection are required.
+    # Should be avoided when command module is sufficient.
+    - name: Check disk usage
+      ansible.builtin.shell: df -h | grep -v tmpfs
+      register: disk_usage
+
+
+    # =========================
+    # STAT MODULE
+    # =========================
+    # Used to check file existence and attributes.
+    # Commonly used in conditional logic.
+    - name: Check if nginx config exists
+      ansible.builtin.stat:
+        path: /etc/nginx/nginx.conf
+      register: nginx_conf
+
+
+    # =========================
+    # FETCH MODULE
+    # =========================
+    # Used to copy files from managed nodes to controller.
+    # Helpful for logs and reports.
+    - name: Fetch nginx log file
+      ansible.builtin.fetch:
+        src: /var/log/nginx/access.log
+        dest: logs/
+        flat: yes
+
+
+    # =========================
+    # ANSIBLE-VAULT (CONCEPT)
+    # =========================
+    # Used to encrypt sensitive data like passwords and keys.
+    # Referenced using vars_files (encrypted).
+    - name: Use vault variable (example)
+      ansible.builtin.debug:
+        msg: "Database password is stored securely in Ansible Vault"
+
+
+  handlers:
+    # =========================
+    # HANDLER
+    # =========================
+    # Handlers run only when notified.
+    # Commonly used for service restarts.
+    - name: Restart nginx
+      ansible.builtin.systemd:
+        name: nginx
+        state: restarted
