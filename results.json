@@ -80,7 +80,7 @@
                                 "description": "",
                                 "groups": [
                                     {
-                                        "group_id": "sg-07c8acf3fa6b923fa",
+                                        "group_id": "sg-02d08cd39708d58c0",
                                         "group_name": "allow-all-ports"
                                     }
                                 ],
@@ -139,7 +139,7 @@
                         "root_device_type": "ebs",
                         "security_groups": [
                             {
-                                "group_id": "sg-07c8acf3fa6b923fa",
+                                "group_id": "sg-02d08cd39708d58c0",
                                 "group_name": "allow-all-ports"
                             }
                         ],
@@ -206,7 +206,7 @@
                         "purge_tags": true,
                         "region": "us-east-1",
                         "secret_key": null,
-                        "security_group": "sg-07c8acf3fa6b923fa",
+                        "security_group": "sg-02d08cd39708d58c0",
                         "security_groups": [],
                         "session_token": null,
                         "state": "present",
@@ -235,7 +235,7 @@
                         {
                             "DeviceIndex": 0,
                             "Groups": [
-                                "sg-07c8acf3fa6b923fa"
+                                "sg-02d08cd39708d58c0"
                             ],
                             "SubnetId": "subnet-0e183c806a6e13582"
                         }
@@ -340,7 +340,7 @@
                                 "description": "",
                                 "groups": [
                                     {
-                                        "group_id": "sg-07c8acf3fa6b923fa",
+                                        "group_id": "sg-02d08cd39708d58c0",
                                         "group_name": "allow-all-ports"
                                     }
                                 ],
@@ -399,7 +399,7 @@
                         "root_device_type": "ebs",
                         "security_groups": [
                             {
-                                "group_id": "sg-07c8acf3fa6b923fa",
+                                "group_id": "sg-02d08cd39708d58c0",
                                 "group_name": "allow-all-ports"
                             }
                         ],
@@ -466,7 +466,7 @@
                         "purge_tags": true,
                         "region": "us-east-1",
                         "secret_key": null,
-                        "security_group": "sg-07c8acf3fa6b923fa",
+                        "security_group": "sg-02d08cd39708d58c0",
                         "security_groups": [],
                         "session_token": null,
                         "state": "present",
@@ -495,7 +495,7 @@
                         {
                             "DeviceIndex": 0,
                             "Groups": [
-                                "sg-07c8acf3fa6b923fa"
+                                "sg-02d08cd39708d58c0"
                             ],
                             "SubnetId": "subnet-0e183c806a6e13582"
                         }
