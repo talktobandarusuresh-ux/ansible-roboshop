@@ -9,15 +9,15 @@
     # we can pass instances through command line using -e
     instances: 
     - mongodb
-    - redis
-    - mysql
-    - rabbitmq
-    - catalogue
-    - cart
-    - user
-    - shipping
-    - payment
-    - frontend
+    # - redis
+    # - mysql
+    # - rabbitmq
+    # - catalogue
+    # - cart
+    # - user
+    # - shipping
+    # - payment
+    # - frontend
   tasks:
   - name: create ec2 instance
     amazon.aws.ec2_instance:
@@ -56,14 +56,14 @@
     loop: "{{ ec2_output.results }}"
 
   # we are creating one record with public only for frontend
-  - name: create route53 record for frontend
-    amazon.aws.route53:
-      state: present
-      zone: "{{ domain_name }}"
-      record: "{{ domain_name }}" # bandarusuresh.in
-      type: A
-      ttl: 1
-      value: "{{ item.instances[0].public_ip_address }}"
-      overwrite: true
-    when: item.item == "frontend"
-    loop: "{{ ec2_output.results }}"
+  # - name: create route53 record for frontend
+  #   amazon.aws.route53:
+  #     state: present
+  #     zone: "{{ domain_name }}"
+  #     record: "{{ domain_name }}" # bandarusuresh.in
+  #     type: A
+  #     ttl: 1
+  #     value: "{{ item.instances[0].public_ip_address }}"
+  #     overwrite: true
+  #   when: item.item == "frontend"
+  #   loop: "{{ ec2_output.results }}"
