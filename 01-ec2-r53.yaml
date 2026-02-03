@@ -9,9 +9,9 @@
     # we can pass instances through command line using -e
     instances: 
     - mongodb
-    # - redis
-    # - mysql
-    # - rabbitmq
+    - redis
+    - mysql
+    - rabbitmq
     # - catalogue
     # - cart
     # - user
